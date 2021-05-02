@@ -1,0 +1,126 @@
+*{
+    box-sizing: border-box;
+    margin: 0;
+}
+body{
+    font-family: arial,sans-serif;
+    color: #202124;
+}
+header{
+    float: left;
+    width: 100%;
+    background-image: linear-gradient(to right, white, #b6eb7a , #869760);
+    padding:25px;
+    height: calc(10%);
+    color: gray;
+}
+img{
+    width: 50px;
+    height: 25px;
+}
+nav{
+    float: left;
+    width: 15%;
+    padding: 10px;
+    height: calc(90%);
+}
+nav a{
+    float: left;
+    width: 100%;
+    font-size: .875rem;
+    padding: 15px;  
+    border-radius: 10px;
+    font-weight: bold;
+}
+nav a:hover{
+    color: white;
+    background-color: #99AD6E;
+}
+table{
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td{
+    width: 100%;
+    padding: 15px;
+    border-bottom: solid 1px;
+}
+button{
+    width: 100px;
+    padding: 5px 20px 5px 20px; 
+    border: none;
+    background-color: #f8f5f1; 
+}
+button:hover{
+    background-color: transparent;
+}
+.div-order{
+    float: left;
+    width: 80%;
+    padding: 20px;
+    border-radius: 20px;
+}
+.div-order-left{
+    float: left;
+    width: 60%;
+    padding: 20px;
+    border-radius: 25px;
+    overflow: auto;
+    height: 600px;
+}
+.div-order-right{
+    float: right;
+    width: 40%;
+    padding: 20px;
+    background-color: #F9FFFA;
+    overflow: auto;
+    height: 600px;
+}
+.order-food{
+    float: left;
+    width: 100%;
+    text-align: justify;
+    padding: 25px;
+    background-color: #bfcba8;
+    margin-bottom: 5px;
+}
+.menu-food{
+    float: left;
+    width: 100%;
+    padding: 15px;
+    background: #f8f5f1; 
+    margin-bottom: 5px;
+    border-radius: 10px;
+}
+.menu-food:hover{
+    background-color: #dbf0d2;
+}
+.search{
+    font-size: 15px;
+    border-radius: 20px;
+    padding: 10px;
+    outline: none;
+    border: none;
+    margin-bottom: 10px;
+    background-color: #f1f3f4;
+}
+.button-delete{
+    color: red;  
+    background-color: transparent;
+}
+.button-add{
+    background-color: transparent;
+    float: right;
+    outline: none;
+}
+.button-add:hover{
+    background-color: transparent;
+}
+.button-submit{
+    float: right;
+    width: 20%;
+    padding: 10px;
+    border-radius: 20px;
+    background-color: #DEFFE2;
+}
