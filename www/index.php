@@ -7,14 +7,14 @@
     </head>
          <!-- ---------------------------------------------------------------------------- -->
         <header><img src="../styles/cocolime.png">POS</header>
-         <!-- ---------------------------------------------------------------------------- -->
+         <!-- Navigation -->
         <nav>
             <a onclick="openSales()"><i class="fas fa-shopping-cart"></i> &nbsp Sales</a>
             <a onclick="openTransactions()"><i class="fas fa-history"></i> &nbsp Transactions</a>
             <a><i class="fas fa-sign-out-alt"></i> &nbsp Logout</a>
         </nav>
-         <!-- ---------------------------------------------------------------------------- -->
-        <div class="div-order" id="div-order">
+         <!-- Order List -->
+         <div class="div-order" id="div-order">
             <div class="div-order-left" style="height:500px">
                 <h1 style="float: left;width: 25%;color:rgb(63, 63, 63)"><i class="fas fa-cart-plus"></i> Orders</h1>
                 <button onclick="sendOrders()" class='button-submit'><i class="fas fa-share"></i>&nbsp <b>Add Orders</b> </button>
@@ -26,9 +26,8 @@
                 <table>
                     <tr>
                         <th>Product</th>
+                        <th>Quantity</th>
                         <th>Price</th>
-                        <th></th>
-                        <th></th>
                     </tr>
                     <tbody id='orders'>
                     </tbody>
@@ -71,11 +70,12 @@
                 <h3 id='total'></h3>
             </div>
         </div>
-        <!-- ---------------------------------------------------------------------------- -->
+        <!-- Transactions -->
         <div id="div-transactions" style="float: left;
         width: 80%;
         padding: 20px;
-        border-radius: 20px;">
+        border-radius: 20px;
+        display:none;">
         <div style="float:left;width:100%;padding: 20px;">
             <h1 style="color:rgb(63, 63, 63)"><i class="fas fa-clipboard-list"></i>&nbspTransactions&nbsp<button onclick="sort_desc()" style="padding: 10px;border-radius: 20px;
                 background-color:rgb(252, 167, 167);" onMouseOver="this.style.background='transparent'" 
@@ -146,8 +146,12 @@
         <script src="https://kit.fontawesome.com/c4442c2032.js" crossorigin="anonymous"></script>
         <script src='../js/jquery-3.4.1.min.js'></script>
         <script>
+            var orders = []; // Store each Food item to Array
+            var data; // The Data passed from PHP
+            var res;
             $( document ).ready(function() {
              show_trans();
+             openSales();
             });
             function openSales(){
                 $('#div-order').show();
@@ -157,43 +161,37 @@
                 $('#div-order').hide();
                 $('#div-transactions').show();
             }
-            var orders = []; // Store each Food item to Array
-            var data; // The Data passed from PHP
-            function add(data){ // pass Food item to orders[]
-                var str_html='';
-                var total = 0;
-                var quantity;
+            function add(data){ // Pass Food item to orders[]
                 data = data;
                 orders.push(data); // Push data to orders[]
-                for(var i=0;i<orders.length; i++){ // Display the clicked food items from orders[]
-                    quantity = orders[i].product_quantity;
-                    str_html+='<tr>';
-                    str_html+='<td> '+orders[i].product_name+'</td>';
-                    str_html+='<td>'+orders[i].product_price+'</td>';
-                    str_html+='<td><button class="button-delete" onclick="remove()"><i class="fas fa-trash"></i></button></td>';
-                    str_html+='</tr>';
-                    total = total + parseInt(orders[i].product_price);
-                }
                 parseProducts(orders); // Parse all numbers to Integers
-                $('#orders').html(str_html);
-                $('#total').html("<i class='fas fa-tag'></i>&nbspTotal Cost: &nbsp ₱"+ total);
-            } 
-            function remove(){ // Pop to remove food items from orders[] and display
-                orders.pop();
-                var total = 0;
-                var str_html='';
-                for(var i=0;i<orders.length; i++){
-                    str_html+='<tr>';
-                    str_html+='<td> '+orders[i].product_name+'</td>';
-                    str_html+='<td>'+orders[i].product_price+'</td>';
-                    str_html+='<td><button class="button-delete" onclick="remove()"><i class="fas fa-trash"></i></button></td>';
-                    str_html+='</tr>';
-                    total = total + parseInt(orders[i].product_price);      
-                }
-                $('#orders').html(str_html);
-                $('#total').html("<i class='fas fa-tag'></i>&nbspTotal Cost: &nbsp ₱"+ total);
-            }
+                var result = orders // Group Data
+                    .map((item, i, array) => {
+                    const defaultValue = {
+                    product_id: item.product_id,
+                    product_name: item.product_name,
+                    product_quantity: 0,
+                    product_price: 0
+                    }
+                    const finalValue = array
+                    .filter(other => other.product_name === item.product_name) // We filter the same items
+                    .reduce((accum, currentVal) => { // We reduce them into a single entry
+                        accum.product_quantity += currentVal.product_quantity;
+                        accum.product_price += currentVal.product_price;
+                        return accum;
+                    }, defaultValue);
 
+                    return finalValue;
+                })
+                .filter((item, thisIndex, array) => { // Now our new array has duplicates, lets remove them
+                    const index = array.findIndex((otherItem, otherIndex) => otherItem.product_name === item.product_name && otherIndex !== thisIndex && otherIndex > thisIndex);
+
+                    return index === -1
+                })
+                showAll(result);
+                res = result;
+                console.log(res)
+            } 
             function parseProducts(array){ // Parse all numbers
                 for(var i=0; i<array.length;i++){
                     array[i].product_id = parseInt(array[i].product_id);
@@ -213,7 +211,7 @@
                         $.ajax({
                             url: "orders.php",
                             method: "POST",
-                            data: { orders : JSON.stringify( orders ) },
+                            data: { orders : JSON.stringify( res ) },
                             success: function(res){
                             console.log(res)
                         }
@@ -227,7 +225,6 @@
                     str_html+='<tr>';
                     str_html+='<td> '+orders[i].product_name+'</td>';
                     str_html+='<td>'+orders[i].product_price+'</td>';
-                    str_html+='<td><button class="button-delete" onclick="remove()"><i class="fas fa-trash"></i></button></td>';
                     str_html+='</tr>';
                     total = total + parseInt(orders[i].product_price);      
                 }
@@ -262,15 +259,29 @@
                 $('#orders').html(str_html);
                 $('#total').html("<i class='fas fa-tag'></i>&nbspTotal Cost: &nbsp ₱"+ total); 
             }
-            function show_trans(){
+            function showAll(array){
+                var total = 0;
+                var str_html='';
+                for(var i=0;i<array.length; i++){ // Display the clicked food items from array[]
+                    str_html+='<tr>';
+                    str_html+='<td> '+array[i].product_name+'</td>';
+                    str_html+='<td>'+array[i].product_quantity+'</td>';
+                    str_html+='<td>'+array[i].product_price+'</td>';
+                    str_html+='</tr>';
+                    total = total + parseInt(array[i].product_price);
+                }
+                $('#orders').html(str_html);
+                $('#total').html("<i class='fas fa-tag'></i>&nbspTotal Cost: &nbsp ₱"+ total);
+            }
+            function show_trans(){ // Show trans div
                    $('#trans-desc').show();
                    $('#trans-asc').hide();
             }
-            function sort_desc(){
+            function sort_desc(){ // Show transation descendng div
                    $('#trans-desc').show();
                    $('#trans-asc').hide();
             }
-            function sort_asc(){
+            function sort_asc(){ // Show transation ascendng div
                    $('#trans-desc').hide();
                    $('#trans-asc').show();
             }
