@@ -3,24 +3,26 @@
 ?>
 <html>
     <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="../styles/styles.css">
     </head>
-         <!-- ---------------------------------------------------------------------------- -->
-        <header><img src="../styles/cocolime.png">POS</header>
+        <header><div class="div-header-time"><img src="../styles/cocolime.png">POS</div>
+        <div class="div-header-time" class="div-header-time"><h2 id=time class="time"></h2><div>
+    </header>
+
          <!-- Navigation -->
         <nav>
             <a onclick="openSales()"><i class="fas fa-shopping-cart"></i> &nbsp Sales</a>
             <a onclick="openTransactions()"><i class="fas fa-history"></i> &nbsp Transactions</a>
             <a><i class="fas fa-sign-out-alt"></i> &nbsp Logout</a>
         </nav>
+
          <!-- Order List -->
          <div class="div-order" id="div-order">
-            <div class="div-order-left" style="height:500px">
+            <div class="div-order-left">
                 <h1 style="float: left;width: 25%;color:rgb(63, 63, 63)"><i class="fas fa-cart-plus"></i> Orders</h1>
-                <button onclick="sendOrders()" class='button-submit'><i class="fas fa-share"></i>&nbsp <b>Add Orders</b> </button>
-                <button onclick="emptyOrders()" style="float: right;width: 20%;padding: 10px;border-radius: 20px;
-                background-color:rgb(252, 167, 167);" onMouseOver="this.style.background='transparent'" 
-                onMouseOut="this.style.background='rgb(252, 167, 167)'"><b>Cancel Orders</b> </button>
+                <button onclick="openModal()" class='button-submit'><i class="fas fa-share"></i>&nbsp <b>Add Orders</b> </button>
+                <button onclick="emptyOrders()" class='button-cancel'><b>Cancel Orders</b> </button>
                 <br>
                 <br>
                 <table>
@@ -28,11 +30,15 @@
                         <th>Product</th>
                         <th>Quantity</th>
                         <th>Price</th>
+                        <th></th>
                     </tr>
                     <tbody id='orders'>
                     </tbody>
                 </table>
                 <br>
+            </div>
+            <div class="div-total">
+                <h2 id='total'><i class='fas fa-tag'></i>&nbspTotal Cost: &nbsp ₱</h2>
             </div>
             <div class="div-order-right">
                 <h1 style="color:rgb(63, 63, 63)"><i class="fas fa-utensils"></i> Menu</h1>
@@ -51,7 +57,7 @@
                         echo "<div class='menu-food'>";
                         echo $row['product_name'];
                         $row = json_encode($row);
-                        echo "<button class='button-add' onclick='add($row)'> <i class='fas fa-plus'></i> </button>"; // Pass Data to JSON object
+                        echo "<button class='button-add' onclick='add($row)'><i class='fas fa-plus'></i></button>"; // Pass Data to JSON object
                         echo "</div>";
                         }
                     }
@@ -61,39 +67,36 @@
                     }
                 ?>
             </div>
-            <div style=" float: left;
-                width: 300px;
-                padding: 20px;
-                border-radius: 25px;
-                overflow: auto;
-                text-align: center;">
-                <h3 id='total'></h3>
+            <!-- The Modal -->
+            <div id="myModal" class="modal">
+                <div class="modal-content">
+                    <h2>Are you sure to send orders?</h2>
+                    <br>
+                    <hr>
+                    <br>
+                    <button onclick="sendOrders()" class="button-send-orders"><b>yes</b></button>
+                    <br>
+                    <button onclick="closeModal()" class="button-send-cancel"><b>no</b></button>
+                    <br>
+                </div>
             </div>
         </div>
         <!-- Transactions -->
-        <div id="div-transactions" style="float: left;
-        width: 80%;
-        padding: 20px;
-        border-radius: 20px;
-        display:none;">
-        <div style="float:left;width:100%;padding: 20px;">
-            <h1 style="color:rgb(63, 63, 63)"><i class="fas fa-clipboard-list"></i>&nbspTransactions&nbsp<button onclick="sort_desc()" style="padding: 10px;border-radius: 20px;
-                background-color:rgb(252, 167, 167);" onMouseOver="this.style.background='transparent'" 
-                onMouseOut="this.style.background='rgb(252, 167, 167)'">desc<br><i class="fas fa-sort-down"></i></button>&nbsp<button onclick="sort_asc()" style="padding: 10px;border-radius: 20px;
-                background-color:#DEFFE2;" onMouseOver="this.style.background='transparent'" 
-                onMouseOut="this.style.background='#DEFFE2'">asc<br><i class="fas fa-sort-up"></i></button></h1>
-        </div>
-            <div style="float: left;
-                width: 100%;
-                padding: 20px;
-                border-radius: 25px;
-                overflow: auto;
-                height: 400px;">
+        <div id="div-transactions" class="div-transactions">
+            <div class="div-trans-top">
+                <h1 style="color:rgb(63, 63, 63)"><i class="fas fa-clipboard-list"></i>&nbspTransactions
+                &nbsp
+                <button onclick="sort_desc()" class="button-desc">desc<br><i class="fas fa-sort-down"></i>
+                </button>
+                &nbsp
+                <button onclick="sort_asc()" class = "button-asc">asc<br><i class="fas fa-sort-up"></i></button></h1>
+            </div>
+            <div class="div-asc-desc">
                 <br>
                 <br>
-                <div id="trans-desc">
+                <div id="trans-desc" class="div-desc">
                 <?php
-                    $sql_trans = "SELECT tbl_transactions.trans_id, tbl_orders.customer_id, tbl_orders.order_status, tbl_transactions.trans_date_time FROM tbl_transactions INNER JOIN tbl_orders ON tbl_transactions.trans_id = tbl_orders.trans_id GROUP BY tbl_transactions.trans_date_time DESC";
+                    $sql_trans = "SELECT tbl_transactions.trans_id, tbl_orders.customer_id, tbl_orders.order_status, tbl_transactions.trans_date_time, tbl_transactions.trans_time FROM tbl_transactions INNER JOIN tbl_orders ON tbl_transactions.trans_id = tbl_orders.trans_id GROUP BY tbl_transactions.trans_date_time DESC";
                     $result_trans = mysqli_query($conn, $sql_trans);
                     if(mysqli_num_rows($result_trans) > 0){
                         while($row_trans = mysqli_fetch_assoc($result_trans)){
@@ -106,6 +109,9 @@
                             echo $row_trans['trans_date_time'];
                             echo '<br>';
                             echo '<br>';
+                            echo $row_trans['trans_time'];
+                            echo '<br>';
+                            echo '<br>';
                             echo $row_trans['order_status'];
                             echo "</div>";
                         }
@@ -116,9 +122,9 @@
                     }
                 ?>
                 </div>
-                <div id="trans-asc">   
+                <div id="trans-asc" class="div-asc">   
                 <?php
-                    $sql_trans_asc = "SELECT tbl_transactions.trans_id, tbl_orders.customer_id, tbl_orders.order_status, tbl_transactions.trans_date_time FROM tbl_transactions INNER JOIN tbl_orders ON tbl_transactions.trans_id = tbl_orders.trans_id GROUP BY tbl_transactions.trans_date_time ASC";
+                    $sql_trans_asc = "SELECT tbl_transactions.trans_id, tbl_orders.customer_id, tbl_orders.order_status, tbl_transactions.trans_date_time, tbl_transactions.trans_time FROM tbl_transactions INNER JOIN tbl_orders ON tbl_transactions.trans_id = tbl_orders.trans_id GROUP BY tbl_transactions.trans_date_time ASC";
                     $result_trans_asc = mysqli_query($conn, $sql_trans_asc);
                     if(mysqli_num_rows($result_trans_asc) > 0){
                         while($row_trans_asc = mysqli_fetch_assoc($result_trans_asc)){
@@ -129,6 +135,9 @@
                             echo '<hr>';
                             echo '<br>';
                             echo $row_trans_asc['trans_date_time'];
+                            echo '<br>';
+                            echo '<br>';
+                            echo $row_trans_asc['trans_time'];
                             echo '<br>';
                             echo '<br>';
                             echo $row_trans_asc['order_status'];
@@ -143,23 +152,28 @@
                 </div>
             </div>
         </div>
+
+         <!-- Script -->
         <script src="https://kit.fontawesome.com/c4442c2032.js" crossorigin="anonymous"></script>
         <script src='../js/jquery-3.4.1.min.js'></script>
         <script>
             var orders = []; // Store each Food item to Array
             var data; // The Data passed from PHP
-            var res;
+            var res; // The Group By Results
+            var time; // Time
+            var modal = document.getElementById("myModal"); // Modal ID
             $( document ).ready(function() {
-             show_trans();
-             openSales();
+                show_trans();
+                openSales();
+                formatAMPM(new Date); // Time
             });
-            function openSales(){
-                $('#div-order').show();
+            function openSales(){ // Open Div Order , Close Trans
+                $('#div-order').show(); 
                 $('#div-transactions').hide();
             }
-            function openTransactions(){
+            function openTransactions(){ // Open Div Trans , Close Order
                 $('#div-order').hide();
-                $('#div-transactions').show();
+                $('#div-transactions').show(); 
             }
             function add(data){ // Pass Food item to orders[]
                 data = data;
@@ -190,7 +204,6 @@
                 })
                 showAll(result);
                 res = result;
-                console.log(res)
             } 
             function parseProducts(array){ // Parse all numbers
                 for(var i=0; i<array.length;i++){
@@ -201,38 +214,22 @@
                 return(array);
             }
             function sendOrders(){ // Send Orders[] to PHP array
-                if(orders.length === 0)
-                {
-                        alert('Orders: \n No Orders!'); // Validate if empty
-                } 
-                    else
-                    {
-                        alert('Orders: \n Orders Pending!');
-                        $.ajax({
-                            url: "orders.php",
-                            method: "POST",
-                            data: { orders : JSON.stringify( res ) },
-                            success: function(res){
-                            console.log(res)
-                        }
-                        });
-                    }
-                var empty_orders = []; // EMPTY The ARRAY orders
-                orders = empty_orders; 
-                var total = 0;
-                var str_html='';
-                for(var i=0;i<orders.length; i++){
-                    str_html+='<tr>';
-                    str_html+='<td> '+orders[i].product_name+'</td>';
-                    str_html+='<td>'+orders[i].product_price+'</td>';
-                    str_html+='</tr>';
-                    total = total + parseInt(orders[i].product_price);      
-                }
-                $('#orders').html(str_html);
-                $('#total').html("<i class='fas fa-tag'></i>&nbspTotal Cost: &nbsp ₱"+ total);
+                closeModal();
                 location.reload();
+                $.ajax({
+                    url: "orders.php", // Send AJAX to orders.php
+                    method: "POST",
+                    data: { orders : JSON.stringify( res ), time : JSON.stringify(time) },
+                    success: function(res){
+                    console.log(res)
+                    }
+                });
+                var empty_orders = []; // EMPTY The ARRAY orders
+                orders = empty_orders;  
+                showAll(result);
+                alert('Orders: \n Orders Pending!');
             }
-            function search(){
+            function search(){ // Search LIKE % * The word User enters * %
                 var search = document.getElementById("search").value;
                 $.ajax({
                     url: "search.php",
@@ -243,39 +240,56 @@
                     }
                 });                
             }
-            function emptyOrders(){
-                var empty_orders = []; // EMPTY The ARRAY orders
+            function emptyOrders(){ // EMPTY The ARRAY orders
+                var empty_orders = []; 
                 orders = empty_orders;
                 var total = 0;
                 var str_html='';
-                for(var i=0;i<orders.length; i++){
-                    str_html+='<tr>';
-                    str_html+='<td> '+orders[i].product_name+'</td>';
-                    str_html+='<td>'+orders[i].product_price+'</td>';
-                    str_html+='<td><button class="button-delete" onclick="remove()"><i class="fas fa-trash"></i></button></td>';
-                    str_html+='</tr>';
-                    total = total + parseInt(orders[i].product_price);      
-                }
-                $('#orders').html(str_html);
-                $('#total').html("<i class='fas fa-tag'></i>&nbspTotal Cost: &nbsp ₱"+ total); 
+                showAll(orders);
             }
-            function showAll(array){
+            function showAll(array){ // Display Array
                 var total = 0;
                 var str_html='';
-                for(var i=0;i<array.length; i++){ // Display the clicked food items from array[]
+                for(var i=0;i<array.length; i++){ 
                     str_html+='<tr>';
                     str_html+='<td> '+array[i].product_name+'</td>';
                     str_html+='<td>'+array[i].product_quantity+'</td>';
                     str_html+='<td>'+array[i].product_price+'</td>';
+                    str_html+='<td><button onclick="popOrder('+array[i].product_id+','+array[i].product_quantity+')" class="button-delete"><i class="fas fa-trash"></i></button></td>';
                     str_html+='</tr>';
                     total = total + parseInt(array[i].product_price);
                 }
                 $('#orders').html(str_html);
                 $('#total').html("<i class='fas fa-tag'></i>&nbspTotal Cost: &nbsp ₱"+ total);
             }
+            function popOrder(id){ // Pop Order
+                // for (var i=100; i >= orders.length; i--){
+                //     var index = orders.findIndex(function(o){
+                //     return o.product_id === id;
+                //     })
+                //     if (index !== -1) orders.splice(index, 1);
+                // }
+                for (var i = 0; i <= orders.length; i++){
+                    var index = orders.findIndex(function(o){
+                    return o.product_id === id;
+                    })
+                    if (index !== -1) i = 0, orders.splice(index, 1);
+                    console.log(orders)
+                    }
+                popResults(id);
+                showAll(res)
+            }
+            function popResults(id){ // Pop Results
+                for (var i = 0; i <= res.length; i++){
+                    var index = res.findIndex(function(o){
+                    return o.product_id === id;
+                    })
+                    if (index !== -1) i = 0, res.splice(index, 1); 
+                   
+                }
+            }
             function show_trans(){ // Show trans div
-                   $('#trans-desc').show();
-                   $('#trans-asc').hide();
+                sort_desc();
             }
             function sort_desc(){ // Show transation descendng div
                    $('#trans-desc').show();
@@ -284,6 +298,40 @@
             function sort_asc(){ // Show transation ascendng div
                    $('#trans-desc').hide();
                    $('#trans-asc').show();
+            }
+            function openModal() {  // Get the modal
+                if(orders.length === 0)
+                {
+                    alert('Orders: \n No Orders!'); // Validate if empty
+                }
+                else{
+                    modal.style.display = "block";
+                } 
+            }
+            function closeModal() { // Close Modal
+                modal.style.display = "none";
+            }
+            window.onclick = function(event) {
+                if (event.target == modal) {
+                  modal.style.display = "none";
+                }
+            }
+            function formatAMPM(date) { // Time
+                var hours = date.getHours();
+                var minutes = date.getMinutes();
+                var ampm = hours >= 12 ? 'pm' : 'am';
+                hours = hours % 12;
+                hours = hours ? hours : 12; // the hour '0' should be '12'
+                minutes = minutes < 10 ? '0'+minutes : minutes;
+                var strTime = hours + ':' + minutes + ' ' + ampm;
+                // return strTime;
+                time = strTime;
+                document.getElementById('time').innerHTML='<i class="fas fa-clock"></i> '+time;
+                displayC();
+            }
+            function displayC(){ // Update Time
+                var refresh = 1000;
+                myTime = setTimeout('formatAMPM(new Date)', refresh);
             }
         </script>
 </html>

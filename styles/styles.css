@@ -40,7 +40,6 @@ table{
     width: 100%;
     border-collapse: collapse;
 }
-
 th, td{
     width: 100%;
     padding: 15px;
@@ -63,6 +62,7 @@ button:hover{
 }
 .div-order-left{
     float: left;
+    height:500px;
     width: 60%;
     padding: 20px;
     border-radius: 25px;
@@ -70,10 +70,9 @@ button:hover{
     height: 600px;
 }
 .div-order-right{
-    float: right;
+    float: left;
     width: 40%;
     padding: 20px;
-    background-color: #F9FFFA;
     overflow: auto;
     height: 600px;
 }
@@ -88,13 +87,11 @@ button:hover{
 .menu-food{
     float: left;
     width: 100%;
+    margin-bottom: 5px;
     padding: 15px;
-    background: #f8f5f1; 
     margin-bottom: 5px;
     border-radius: 10px;
-}
-.menu-food:hover{
-    background-color: #dbf0d2;
+    background-color: whitesmoke;
 }
 .search{
     font-size: 15px;
@@ -110,7 +107,7 @@ button:hover{
     background-color: transparent;
 }
 .button-add{
-    background-color: transparent;
+    background-color: #DEFFE2;
     float: right;
     outline: none;
 }
@@ -124,3 +121,121 @@ button:hover{
     border-radius: 20px;
     background-color: #DEFFE2;
 }
+.button-submit:hover{
+    background-color: transparent;
+}
+.button-cancel{
+    float: right;
+    width: 20%;
+    padding: 10px;
+    border-radius: 20px;
+    background-color:rgb(252, 167, 167);
+}
+.button-cancel:hover{
+    background-color: transparent;
+}
+.div-transactions{
+    float: left;
+    width: 80%;
+    padding: 20px;
+    border-radius: 20px;
+}
+.div-trans-top{
+    float:left;
+    width:100%;
+    padding: 20px;
+}
+.button-desc{
+    padding: 10px;
+    border-radius: 20px;
+    background-color:rgb(252, 167, 167);
+}
+.button-desc:hover{
+    background-color: transparent;
+}
+.button-asc{
+    padding: 10px;
+    border-radius: 20px;
+    background-color:#DEFFE2;
+}
+.button-asc:hover{
+    background-color: transparent;
+}
+.div-asc-desc{
+    float: left;
+    width: 100%;
+    padding: 20px;
+    border-radius: 25px;
+    overflow: auto;
+    height: 400px;
+}
+.div-asc{
+    width: 100%;
+    padding: 20px;
+    border-radius: 25px;
+}
+.div-desc{
+    width: 100%;
+    padding: 20px;
+    border-radius: 25px;
+}
+.div-total{
+    float: left;
+    width: 300px;
+    padding: 20px;
+    overflow: auto;
+    text-align: center;
+    border-radius: 10px;
+    background-color: whitesmoke;
+}
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+.modal-content {
+    border-radius: 15px;
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 30%;
+}
+.button-send-orders{
+    width: 100%;
+    padding: 15px;
+    border-radius: 10px;
+    background-color: #DEFFE2;;
+}
+.button-send-orders:hover{
+    background-color: transparent;
+}
+.button-send-cancel{
+    width: 100%;
+    padding: 15px;
+    border-radius: 10px;
+    background-color: rgb(252, 167, 167);
+}
+.button-send-cancel:hover{
+    background-color: transparent;
+}
+.div-header-time{
+    float:left;
+    width: 30%; 
+    color:rgb(63, 63, 63);
+}
+@media only screen and (max-width: 620px) {
+    /* For mobile phones: */
+    header, nav, .div-order-left, .button-submit, .button-cancel, .div-order-right, .div_transactions, .button-desc, .button-asc, .div-header-time
+    , .modal-content{
+      width: 100%;
+      height: auto;
+    }
+  }

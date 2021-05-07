@@ -2,6 +2,7 @@
 include "../includes/database.php"; // Database !!
 ?>
 <?php
+    $time = json_decode($_POST['time']);
     $id;
     $trans_id;
     $sql_get_customers = "SELECT * FROM `tbl_customers` ORDER BY customer_id DESC LIMIT 1"; // Gets Last Customer ID !!
@@ -39,8 +40,8 @@ include "../includes/database.php"; // Database !!
         VALUES ('{$id}', current_timestamp())";
         $conn->query($sql_add_customers);
 
-        $sql_add_transactions = "INSERT INTO `tbl_transactions`(`trans_id`, `trans_date_time`) 
-        VALUES ('{$trans_id}', current_timestamp())";
+        $sql_add_transactions = "INSERT INTO `tbl_transactions`(`trans_id`, `trans_date_time` , `trans_time`) 
+        VALUES ('{$trans_id}', current_timestamp(), '{$time}')";
         $conn->query($sql_add_transactions);
     }
 ?>
