@@ -74,7 +74,7 @@ button:hover{
     width: 40%;
     padding: 20px;
     overflow: auto;
-    height: 600px;
+    height: 500px;
 }
 .order-food{
     float: left;
@@ -157,6 +157,14 @@ button:hover{
     padding: 10px;
     border-radius: 20px;
     background-color:#DEFFE2;
+}
+.button-refresh{
+    padding: 10px;
+    border-radius: 20px;
+    background-color:#e2e4e2;
+}
+.button-refresh:hover{
+    background-color: transparent;
 }
 .button-asc:hover{
     background-color: transparent;

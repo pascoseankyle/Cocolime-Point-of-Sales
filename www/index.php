@@ -3,8 +3,9 @@
 ?>
 <html>
     <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="../styles/styles.css">
+        <link rel="stylesheet" href="../styles/fontawesome/css/all.css">
     </head>
         <header><div class="div-header-time"><img src="../styles/cocolime.png">POS</div>
         <div class="div-header-time" class="div-header-time"><h2 id=time class="time"></h2><div>
@@ -86,10 +87,12 @@
             <div class="div-trans-top">
                 <h1 style="color:rgb(63, 63, 63)"><i class="fas fa-clipboard-list"></i>&nbspTransactions
                 &nbsp
-                <button onclick="sort_desc()" class="button-desc">desc<br><i class="fas fa-sort-down"></i>
+                <button onclick="sortDesc()" class="button-desc">desc<br><i class="fas fa-sort-down"></i>
                 </button>
                 &nbsp
-                <button onclick="sort_asc()" class = "button-asc">asc<br><i class="fas fa-sort-up"></i></button></h1>
+                <button onclick="sortAsc()" class = "button-asc">asc<br><i class="fas fa-sort-up"></i></button>
+                &nbsp
+                <button onclick="refresh()" class = "button-refresh">refresh<br><i class="fas fa-sync-alt"></i></button></h1>
             </div>
             <div class="div-asc-desc">
                 <br>
@@ -154,7 +157,6 @@
         </div>
 
          <!-- Script -->
-        <script src="https://kit.fontawesome.com/c4442c2032.js" crossorigin="anonymous"></script>
         <script src='../js/jquery-3.4.1.min.js'></script>
         <script>
             var orders = []; // Store each Food item to Array
@@ -163,7 +165,6 @@
             var time; // Time
             var modal = document.getElementById("myModal"); // Modal ID
             $( document ).ready(function() {
-                show_trans();
                 openSales();
                 formatAMPM(new Date); // Time
             });
@@ -215,7 +216,6 @@
             }
             function sendOrders(){ // Send Orders[] to PHP array
                 closeModal();
-                location.reload();
                 $.ajax({
                     url: "orders.php", // Send AJAX to orders.php
                     method: "POST",
@@ -262,19 +262,12 @@
                 $('#orders').html(str_html);
                 $('#total').html("<i class='fas fa-tag'></i>&nbspTotal Cost: &nbsp ₱"+ total);
             }
-            function popOrder(id){ // Pop Order
-                // for (var i=100; i >= orders.length; i--){
-                //     var index = orders.findIndex(function(o){
-                //     return o.product_id === id;
-                //     })
-                //     if (index !== -1) orders.splice(index, 1);
-                // }
+            function popOrder(id){ // Pop Orders
                 for (var i = 0; i <= orders.length; i++){
                     var index = orders.findIndex(function(o){
                     return o.product_id === id;
                     })
                     if (index !== -1) i = 0, orders.splice(index, 1);
-                    console.log(orders)
                     }
                 popResults(id);
                 showAll(res)
@@ -288,14 +281,11 @@
                    
                 }
             }
-            function show_trans(){ // Show trans div
-                sort_desc();
-            }
-            function sort_desc(){ // Show transation descendng div
+            function sortDesc(){ // Show transation descendng div
                    $('#trans-desc').show();
                    $('#trans-asc').hide();
             }
-            function sort_asc(){ // Show transation ascendng div
+            function sortAsc(){ // Show transation ascendng div
                    $('#trans-desc').hide();
                    $('#trans-asc').show();
             }
@@ -332,6 +322,9 @@
             function displayC(){ // Update Time
                 var refresh = 1000;
                 myTime = setTimeout('formatAMPM(new Date)', refresh);
+            }
+            function refresh(){
+                location.reload();
             }
         </script>
 </html>
