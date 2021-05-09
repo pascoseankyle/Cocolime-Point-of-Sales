@@ -7,7 +7,7 @@
         <link rel="stylesheet" href="../styles/styles.css">
         <link rel="stylesheet" href="../styles/fontawesome/css/all.css">
     </head>
-    <body>
+    <body class="no-scroll">
         <div class="div-login">
             <div class="login-card">
                 <form method="POST" action="auth.php">

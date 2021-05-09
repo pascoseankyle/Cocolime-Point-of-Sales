@@ -11,6 +11,8 @@ body{
     float: left;
     width: 100%;
     padding: 200px;
+    padding-top: 150px;
+    overflow: hidden;
 }
 .login-card{
     margin: auto;
@@ -20,7 +22,13 @@ body{
     border-color: lightgrey;
     padding: 10px;
     border-radius: 15px;
-    padding:100px
+    padding: 100px;
+    padding-bottom: 50px; 
+    overflow: hidden;
+}
+.no-scroll{
+    overflow-y: hidden;
+    overflow-x: hidden;
 }
 .login-card h3{
     text-align: center;
@@ -65,10 +73,14 @@ body{
     width: 580px;
     height:300px
 }
+.div-container{
+    float: left;
+    padding-left: 600px;
+    padding-top: 250px;
+}
 .div-no-user{
-    position: absolute;
-    left: 650px;
-    top: 300px;
+    float: left;
+    padding: 100px;
 }
 /* index.php css */
 header{
@@ -315,8 +327,10 @@ button:hover{
 @media only screen and (max-width: 620px) {
     /* For mobile phones: */
     header, nav, .div-order-left, .button-submit, .button-cancel, .div-order-right, .div_transactions,
-    .button-desc, .button-asc, .div-header-time, .div-login, .modal-content{
+    .button-desc, .button-asc, .div-header-time, .div-login, .login-card, .div-container, .div-no-user, .modal-content{
       width: 100%;
       height: auto;
+      padding: 10px;
+      float: left;
     }
   }

@@ -27,11 +27,17 @@
         }
     }
     else {
-        echo "<div class='div-no-user'>";
-        echo "<i class='fas fa-times-circle' style='color:red'></i>&nbspNo user Found!";
-        echo "<br><br>";
-        echo "<button onclick='back()' style='width: 200px'>back</button>";
-        echo "</div>";
+?>
+   <body>
+        <div class='div-container'>
+            <div class='div-no-user'>
+                <i class='fas fa-times-circle' style='color:red'></i>&nbspNo user Found!
+                <br><br>
+                <button onclick='back()' style='width: 200px'>back</button>
+            </div>
+        </div>
+   </body>
+<?php 
     }
 ?>
 </html>
