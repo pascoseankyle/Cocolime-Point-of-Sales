@@ -6,6 +6,71 @@ body{
     font-family: arial,sans-serif;
     color: #202124;
 }
+/* login.php css */
+.div-login{
+    float: left;
+    width: 100%;
+    padding: 200px;
+}
+.login-card{
+    margin: auto;
+    width: 40%;
+    border: solid;
+    border-width: thin;
+    border-color: lightgrey;
+    padding: 10px;
+    border-radius: 15px;
+    padding:100px
+}
+.login-card h3{
+    text-align: center;
+    color:#869760;
+}
+.login-card p{
+    text-align: center;
+    font-weight: lighter;
+}
+.login-card input{
+    width: 100%;
+    font-size: 15px;
+    border-radius: 20px;
+    padding: 10px;
+    outline: none;
+    border: none;
+    margin-bottom: 10px;
+    background-color: #f1f3f4;
+}
+.login-card button{
+    background-image: linear-gradient(to right, white, #b6eb7a);
+    width: 100%;
+    outline: none;
+    padding: 15px;
+    border-radius: 20px;
+}
+.login-card button:hover{
+    background-color: transparent;
+}
+.div-design-logo{
+  position: absolute;
+  left: 10px;
+  top: 10px;
+  height: 60%;
+  color:white;
+  width:33%;
+  padding:10px;
+  border-radius: 10px;
+}
+.div-design-logo img{
+    padding-left:110px;
+    width: 580px;
+    height:300px
+}
+.div-no-user{
+    position: absolute;
+    left: 650px;
+    top: 300px;
+}
+/* index.php css */
 header{
     float: left;
     width: 100%;
@@ -31,6 +96,8 @@ nav a{
     padding: 15px;  
     border-radius: 10px;
     font-weight: bold;
+    text-decoration: none;
+    color: black;
 }
 nav a:hover{
     color: white;
@@ -236,13 +303,19 @@ button:hover{
 }
 .div-header-time{
     float:left;
-    width: 30%; 
+    width: 30%;
+    padding: 5px;
     color:rgb(63, 63, 63);
+}
+.div-user{
+    float: left; 
+    padding: 5px; 
+    color: black;
 }
 @media only screen and (max-width: 620px) {
     /* For mobile phones: */
-    header, nav, .div-order-left, .button-submit, .button-cancel, .div-order-right, .div_transactions, .button-desc, .button-asc, .div-header-time
-    , .modal-content{
+    header, nav, .div-order-left, .button-submit, .button-cancel, .div-order-right, .div_transactions,
+    .button-desc, .button-asc, .div-header-time, .div-login, .modal-content{
       width: 100%;
       height: auto;
     }

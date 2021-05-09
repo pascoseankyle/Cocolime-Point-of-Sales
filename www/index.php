@@ -1,21 +1,39 @@
 <?php
  include "../includes/database.php"; // Database !!
 ?>
+
+<?php
+session_start();
+    if (isset($_SESSION['user_id']) && isset($_SESSION['user_username']) && isset($_SESSION['user_name'])) {
+?>
+
+<!DOCTYPE html>
 <html>
     <head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="../styles/styles.css">
         <link rel="stylesheet" href="../styles/fontawesome/css/all.css">
     </head>
-        <header><div class="div-header-time"><img src="../styles/cocolime.png">POS</div>
-        <div class="div-header-time" class="div-header-time"><h2 id=time class="time"></h2><div>
-    </header>
+    <body>
+        <header>
+            <div class="div-header-time">
+                <img src="../styles/cocolime.png">
+            </div>
+            <div class="div-header-time">
+                <h2 id=time class="time"></h2>
+            </div>
+            <div class="div-user">
+             <?php
+                echo "<h2><b><i class='fas fa-user-tie'></i></b> "."<b>".$_COOKIE['name']."</b></h2>";
+             ?>
+            </div>
+        </header>
 
          <!-- Navigation -->
         <nav>
             <a onclick="openSales()"><i class="fas fa-shopping-cart"></i> &nbsp Sales</a>
             <a onclick="openTransactions()"><i class="fas fa-history"></i> &nbsp Transactions</a>
-            <a><i class="fas fa-sign-out-alt"></i> &nbsp Logout</a>
+            <a onclick="deleteCookie()" href="logout.php" style=" text-decoration: none;"><i class="fas fa-sign-out-alt"></i> &nbsp Logout</a>
         </nav>
 
          <!-- Order List -->
@@ -155,10 +173,10 @@
                 </div>
             </div>
         </div>
-
+    </body>
          <!-- Script -->
-        <script src='../js/jquery-3.4.1.min.js'></script>
-        <script>
+    <script src='../js/jquery-3.4.1.min.js'></script>
+    <script>
             var orders = []; // Store each Food item to Array
             var data; // The Data passed from PHP
             var res; // The Group By Results
@@ -316,7 +334,7 @@
                 var strTime = hours + ':' + minutes + ' ' + ampm;
                 // return strTime;
                 time = strTime;
-                document.getElementById('time').innerHTML='<i class="fas fa-clock"></i> '+time;
+                document.getElementById('time').innerHTML='<h4><i class="fas fa-clock"></i> '+time+'</h4>';
                 displayC();
             }
             function displayC(){ // Update Time
@@ -326,5 +344,17 @@
             function refresh(){
                 location.reload();
             }
-        </script>
+            function deleteCookie(){ // Delete cookie
+                document.cookie = "name=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/SIA-POS/www;";
+            }
+    </script>
 </html>
+
+<?php
+    } 
+    else
+    {
+        header("Location: login.php");
+        exit();
+    }
+?>
