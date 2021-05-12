@@ -87,15 +87,20 @@ session_start();
                 ?>
             </div>
             <!-- The Modal -->
-            <div id="myModal" class="modal">
+            <div id="myModal" class="modal" >
                 <div class="modal-content">
-                    <h2>Are you sure to send orders?</h2>
+                    <img src="../styles/cocolime.png">
+                    <h2 #h2-non-print id='h2-non-print'>Are you sure to send orders?</h2>
                     <br>
                     <hr>
                     <br>
-                    <button onclick="sendOrders()" class="button-send-orders"><b>yes</b></button>
-                    <br>
-                    <button onclick="closeModal()" class="button-send-cancel"><b>no</b></button>
+                    <div id="list-orders">
+                    </div>
+                    <div #buttons-non-print id='buttons-non-print'>
+                        <button onclick="sendOrders()" class="button-send-orders"><b>yes</b></button>
+                        <br>
+                        <button onclick="closeModal()" class="button-send-cancel"><b>no</b></button>
+                    </div>
                     <br>
                 </div>
             </div>
@@ -135,6 +140,7 @@ session_start();
             var data; // The Data passed from PHP
             var res; // The Group By Results
             var time; // Time
+            var globalTotal; // Total Price
             var modal = document.getElementById("myModal"); // Modal ID
             $( document ).ready(function() {
                 openSales();
@@ -188,6 +194,7 @@ session_start();
                 return(array);
             }
             function sendOrders(){ // Send Orders[] to PHP array
+                window.print()
                 closeModal();
                 $.ajax({
                     url: "orders.php", // Send AJAX to orders.php
@@ -235,6 +242,7 @@ session_start();
                 }
                 $('#orders').html(str_html);
                 $('#total').html("<i class='fas fa-tag'></i>&nbspTotal Cost: &nbsp ₱"+ total);
+                globalTotal = total;
             }
             function popOrder(id){ // Pop Orders
                 for (var i = 0; i <= orders.length; i++){
@@ -261,6 +269,20 @@ session_start();
                     alert('Orders: \n No Orders!'); // Validate if empty
                 }
                 else{
+                    var t;
+                    t = globalTotal;
+                    var str_html='';
+                    for(var i=0;i<res.length; i++){ 
+                        str_html+='<ul>';
+                        str_html+='<li> '+res[i].product_quantity+' '+res[i].product_name+': ₱'+res[i].product_price+'</li>';
+                        str_html+='</ul>';
+                    }
+                    str_html+='<br>';
+                    str_html+='<hr>';
+                    str_html+='<br>';
+                    str_html+='<h4 style="text-align:center">Total: '+t+'</h4>';
+                    str_html+='<br>';
+                $('#list-orders').html(str_html);
                     modal.style.display = "block";
                 } 
             }
